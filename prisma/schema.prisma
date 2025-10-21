@@ -22,3 +22,15 @@ model user {
     emailAddress  String @unique
     credits Int  @default(200)
 }
+
+model Project {
+    id      String   @id @default(cuid())
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+
+    name    String
+    githubUrl String    
+    githubToken String?
+
+    deletedAt DateTime?
+}

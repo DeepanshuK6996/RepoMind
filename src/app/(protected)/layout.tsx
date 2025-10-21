@@ -1,4 +1,4 @@
-import { SidebarProvider } from '@/components/ui/sidebar'
+import { SidebarProvider, SidebarTrigger } from '@/components/ui/sidebar'
 import { UserButton } from '@clerk/nextjs'
 import React from 'react'
 import { AppSidebar } from './_components/app-sidebar'
@@ -13,7 +13,8 @@ const SidebarLayout = ({children}: Props) => {
       {/* <AppSidebar /> */}
       <AppSidebar />
       <main className='w-full m-2'>
-
+        {/* sidebaar trigger correct later */}
+        {/* <SidebarTrigger /> */}
         <div className='flex items-center gap-2 border-sidebar-border border bg-sidebar shadow rounded-md p-2 px-4'>
           {/* <SearchBar /> */}
           <div className="ml-auto"></div>
