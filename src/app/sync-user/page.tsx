@@ -1,8 +1,6 @@
 import { db } from '@/server/db';
 import { auth, clerkClient } from '@clerk/nextjs/server'
-import { error } from 'console';
 import { notFound, redirect} from 'next/navigation';
-import React from 'react'
 
 const SyncUser = async() => {
 
