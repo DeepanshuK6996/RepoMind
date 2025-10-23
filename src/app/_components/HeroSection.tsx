@@ -5,6 +5,9 @@ import { cn } from "@/lib/utils";
 import createGlobe from "cobe";
 import { motion } from "motion/react";
 import { IconBrandYoutubeFilled } from "@tabler/icons-react"; 
+import { Box, Lock, Search, Settings, Sparkles } from "lucide-react";
+import { GlowingEffect } from "@/components/ui/glowing-effect";
+
 
 export function HeroSection() {
   const features = [
@@ -41,18 +44,17 @@ export function HeroSection() {
   return (
     <div className="bg-black text-white">
       <HeroParallax products={products} />
-      <div className="relative z-20 mx-auto max-w-7xl py-10 lg:py-40 px-8 rounded-2xl">
+      <div className="relative z-20 mx-auto max-w-7xl rounded-2xl px-8 py-10 lg:py-40">
         <h4 className="mx-auto max-w-5xl text-center text-3xl font-medium tracking-tight lg:text-5xl lg:leading-tight">
           Packed with thousands of features
         </h4>
 
         <p className="mx-auto my-4 max-w-2xl text-center text-sm font-normal text-neutral-300 lg:text-base">
-          From Image generation to video generation, Everything AI has APIs
-          for literally everything. It can even create this website copy for
-          you.
+          From Image generation to video generation, Everything AI has APIs for
+          literally everything. It can even create this website copy for you.
         </p>
 
-        <div className="mt-12 grid grid-cols-1 lg:grid-cols-6 gap-4 rounded-md border border-neutral-700">
+        <div className="mt-12 grid grid-cols-1 gap-4 rounded-md border border-neutral-700 lg:grid-cols-6">
           {features.map((feature) => (
             <FeatureCard key={feature.title} className={feature.className}>
               <FeatureTitle>{feature.title}</FeatureTitle>
@@ -62,6 +64,7 @@ export function HeroSection() {
           ))}
         </div>
       </div>
+
     </div>
   );
 }
@@ -202,57 +205,6 @@ export const products = [
       "https://aceternity.com/images/products/thumbnails/new/renderwork.png",
 
   },
-
-
-
-  {
-
-    title: "Creme Digital",
-
-    link: "https://cremedigital.com",
-
-    thumbnail:
-
-      "https://aceternity.com/images/products/thumbnails/new/cremedigital.png",
-
-  },
-
-  {
-
-    title: "Golden Bells Academy",
-
-    link: "https://goldenbellsacademy.com",
-
-    thumbnail:
-
-      "https://aceternity.com/images/products/thumbnails/new/goldenbellsacademy.png",
-
-  },
-
-  {
-
-    title: "Invoker Labs",
-
-    link: "https://invoker.lol",
-
-    thumbnail:
-
-      "https://aceternity.com/images/products/thumbnails/new/invoker.png",
-
-  },
-
-  {
-
-    title: "E Free Invoice",
-
-    link: "https://efreeinvoice.com",
-
-    thumbnail:
-
-      "https://aceternity.com/images/products/thumbnails/new/efreeinvoice.png",
-
-  },
-
 ];
 
 // export const products = [
@@ -468,5 +420,43 @@ export const Globe = ({ className }: { className?: string }) => {
       style={{ width: 600, height: 600, maxWidth: "100%", aspectRatio: 1 }}
       className={className}
     />
+  );
+};
+
+interface GridItemProps {
+  area: string;
+  icon: React.ReactNode;
+  title: string;
+  description: React.ReactNode;
+}
+ 
+const GridItem = ({ area, icon, title, description }: GridItemProps) => {
+  return (
+    <li className={`min-h-[14rem] list-none ${area}`}>
+      <div className="relative h-full rounded-2xl border p-2 md:rounded-3xl md:p-3">
+        <GlowingEffect
+          spread={40}
+          glow={true}
+          disabled={false}
+          proximity={64}
+          inactiveZone={0.01}
+        />
+        <div className="border-0.75 relative flex h-full flex-col justify-between gap-6 overflow-hidden rounded-xl p-6 md:p-6 dark:shadow-[0px_0px_27px_0px_#2D2D2D]">
+          <div className="relative flex flex-1 flex-col justify-between gap-3">
+            <div className="w-fit rounded-lg border border-gray-600 p-2">
+              {icon}
+            </div>
+            <div className="space-y-3">
+              <h3 className="-tracking-4 pt-0.5 font-sans text-xl/[1.375rem] font-semibold text-balance text-black md:text-2xl/[1.875rem] dark:text-white">
+                {title}
+              </h3>
+              <h2 className="font-sans text-sm/[1.125rem] text-black md:text-base/[1.375rem] dark:text-neutral-400 [&_b]:md:font-semibold [&_strong]:md:font-semibold">
+                {description}
+              </h2>
+            </div>
+          </div>
+        </div>
+      </div>
+    </li>
   );
 };
