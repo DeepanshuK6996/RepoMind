@@ -17,8 +17,10 @@ const CreatePage = () => {
 
     function onSubmit(data : FormInputs){
         window.alert(JSON.stringify(data, null, 2));
-       // window.alert(data);
+        //window.alert(data);
+        reset();
         return true;
+        
     };
 
   return (

@@ -12,6 +12,7 @@ const SidebarLayout = ({children}: Props) => {
     <SidebarProvider>
       {/* <AppSidebar /> */}
       <AppSidebar />
+
       <main className='w-full m-2'>
         {/* sidebaar trigger correct later */}
         {/* <SidebarTrigger /> */}
