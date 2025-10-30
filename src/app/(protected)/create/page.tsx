@@ -1,9 +1,11 @@
 "use client"
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
+import { api } from '@/trpc/react'
 import Image from 'next/image'
 import React from 'react'
 import { useForm} from 'react-hook-form'
+import { toast } from 'sonner'
 
 type FormInputs = {        
     repoURL: string,
@@ -15,12 +17,25 @@ const CreatePage = () => {
 
     const{register, handleSubmit, reset} = useForm<FormInputs>();
 
+    const createProject = api.project.createProject.useMutation();
+
     function onSubmit(data : FormInputs){
-        window.alert(JSON.stringify(data, null, 2));
+        //window.alert(JSON.stringify(data, null, 2));
         //window.alert(data);
-        reset();
+        createProject.mutate({
+            name: data.projectName,
+            githubUrl: data.repoURL,
+            githubToken: data.githubToken,
+        }, {
+            onSuccess :() => {
+                toast.success("Project added successfully!");
+                reset();
+            },
+            onError: (error) => {
+                toast.error(`Error adding project: ${error.message}`);
+            }
+        }); 
         return true;
-        
     };
 
   return (
@@ -45,7 +60,7 @@ const CreatePage = () => {
                     <Input {...register('repoURL', { required: true })} placeholder='Repository URL' type='url' className='mt-2'/>
                     <Input {...register('githubToken')} placeholder='Github Token [Optional]' className='mt-2 mb-4'/>
 
-                    <Button type='submit' className='cursor-pointer'>
+                    <Button type='submit' className='cursor-pointer' disabled={createProject.isPending}>
                         Create Project
                     </Button>
                 </form>
