@@ -12,8 +12,10 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
+  SidebarTrigger,
   useSidebar,
 } from "@/components/ui/sidebar"
+import useProject from "@/hooks/use-project"
 import { cn } from "@/lib/utils"
 import { Bot, CreditCard, Ghost, GhostIcon, LayoutDashboardIcon, Plus, Presentation} from "lucide-react"
 import Image from "next/image"
@@ -43,36 +45,44 @@ const items = [
     }
 ]
 
-const projects = [
-    {
-        title: "Project Alpha",
-        icon: Bot,
-    },
-    {
-        title: "Project Beta",
-        icon: Bot,
-    }
-]
+// const projects = [
+//     {
+//         title: "Project Alpha",
+//         icon: Bot,
+//     },
+//     {
+//         title: "Project Beta",
+//         icon: Bot,
+//     }
+// ]
+
 
 export function AppSidebar() {
 
     const pathname = usePathname();
     const {open} = useSidebar();
+
+    const {projects, projectId, setProjectId} = useProject();
+
   return (
     <Sidebar collapsible="icon" variant="floating">
       <SidebarHeader>
         <div className="flex items-center gap-2">
-            <Image src={'/favicon.ico'}
-                className="rounded-sm"
-                alt="RepoMind Logo"
-                width={40}
-                height={40}
-            />
-            {open &&
-                <h1 className="text-2xl font-bold">
-                    Repomind
-                </h1>
-            }    
+          <Image
+            src={"/favicon.ico"}
+            className="rounded-sm"
+            alt="RepoMind Logo"
+            width={40}
+            height={40}
+          />
+          {open && (
+            <div className="flex items-center">
+              <h1 className="text-2xl font-bold">Repomind</h1>
+              <div className="ml-8">
+                <SidebarTrigger />
+              </div>
+            </div>
+          )}
         </div>
       </SidebarHeader>
       <SidebarContent>
@@ -105,37 +115,46 @@ export function AppSidebar() {
 
           <SidebarGroupContent>
             <SidebarMenu>
-              {projects.map((project) => (
-                <SidebarMenuItem key={project.title}>
+              {projects?.map((project) => (
+                <SidebarMenuItem key={project.name}>
                   <SidebarMenuButton asChild>
                     {/* <Link href={project.url} >
                                 <project.icon />
                                 <span>{project.title}</span>
                             </Link> */}
-                    <div>
+                    <div
+                      className="cursor-pointer"
+                      onClick={() => {
+                        setProjectId(project.id);
+                      }}
+                    >
                       <div
                         className={cn(
                           "text-primary flex size-6 items-center justify-center rounded-sm border bg-white text-sm",
-                          { "bg-primary text-white": true },
+                          { "bg-primary text-white": project.id === projectId },
                         )}
                       >
-                        {project.title.charAt(0)}
+                        {project.name.charAt(0)}
                       </div>
-                      <span>{project.title}</span>
+                      <span>{project.name}</span>
                     </div>
                   </SidebarMenuButton>
                 </SidebarMenuItem>
               ))}
-                {open &&
-                    <SidebarMenuItem>
-                        <Link href="/create">
-                            <Button size="sm" className="mt-2 w-fit" variant={"outline"}>
-                                <Plus/>
-                                Create New Project
-                            </Button>
-                        </Link> 
-                    </SidebarMenuItem>
-                }
+              {open && (
+                <SidebarMenuItem>
+                  <Link href="/create">
+                    <Button
+                      size="sm"
+                      className="mt-2 w-fit"
+                      variant={"outline"}
+                    >
+                      <Plus />
+                      Create New Project
+                    </Button>
+                  </Link>
+                </SidebarMenuItem>
+              )}
             </SidebarMenu>
           </SidebarGroupContent>
         </SidebarGroup>
