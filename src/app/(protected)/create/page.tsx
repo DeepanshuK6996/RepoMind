@@ -1,9 +1,10 @@
 "use client"
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
+import useRefetch from '@/hooks/use-refetch'
 import { api } from '@/trpc/react'
 import Image from 'next/image'
-import React from 'react'
+import React, { useRef } from 'react'
 import { useForm} from 'react-hook-form'
 import { toast } from 'sonner'
 
@@ -19,6 +20,8 @@ const CreatePage = () => {
 
     const createProject = api.project.createProject.useMutation();
 
+    const refetch = useRefetch();
+
     function onSubmit(data : FormInputs){
         //window.alert(JSON.stringify(data, null, 2));
         //window.alert(data);
@@ -29,6 +32,7 @@ const CreatePage = () => {
         }, {
             onSuccess :() => {
                 toast.success("Project added successfully!");
+                refetch();
                 reset();
             },
             onError: (error) => {
