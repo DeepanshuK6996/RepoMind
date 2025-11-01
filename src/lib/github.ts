@@ -1,6 +1,7 @@
 import { db } from "@/server/db";
-import { get } from "http";
 import { Octokit } from "octokit";
+import axios from "axios";
+import { aiSummariseCommit } from "./gemini";
 
 export const octokit = new Octokit({
     auth: process.env.GITHUB_TOKEN,
@@ -75,11 +76,45 @@ export const pullCommits = async (projectId: string) => {
     const unprocessedCommits = await filterUnprocessedCommits(projectId, commitHashes);
     //console.log("Unprocessed Commits:", unprocessedCommits);
 
-    return unprocessedCommits;
+
+    const summarisedCommits = await Promise.allSettled(unprocessedCommits.map((commit) => {
+        return summariseCommit(githubUrl || "", commit.commitHash);        
+    }));
+
+    const summaries = summarisedCommits.map((result) => {
+        if(result.status === "fulfilled") {
+            return result.value as string;
+        } else {
+            console.error("Error summarizing commit:", result.reason);
+            return "No Summary Available";
+        }   
+    });
+
+    const commits = await db.commit.createMany({
+        data: summaries.map((summary, index) => {
+            return {
+                projectId: projectId,  
+                commitHash: unprocessedCommits[index]!.commitHash,
+                commitMessage: unprocessedCommits[index]!.commitMessage,
+                commitAuthorName: unprocessedCommits[index]!.commitAuthorName,
+                commitAuthorAvatar: unprocessedCommits[index]!.commitAuthorAvatar,
+                commitDate: unprocessedCommits[index]!.commitDate,
+                Summary: summary,
+            }
+        }),
+    });
+    return commits;  
 }
 
 async function summariseCommit(githubUrl: string, commitHash: string){
-
+    //get the diff and pass to gemini
+    const {data} = await axios.get(`${githubUrl}/commit/${commitHash}.diff`, {
+        headers: {
+            //'Authorization': `Bearer ${process.env.GITHUB_TOKEN}`,
+            'Accept': 'application/vnd.github.v3.diff',
+        }
+    });
+    return await aiSummariseCommit(data) || "No Summary Generated";
 }
 
 async function fetchProjectGithubUrl(projectId: string) {

@@ -7,7 +7,7 @@ const genAI = new GoogleGenAI({
 
 // const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
 
-export const summariseCommits = async (diff: string) => {
+export const aiSummariseCommit = async (diff: string) => {
     //diff => githuburl/commit/<CommitHash>.diff
 
     // const prompt = [`You are an expert programmer, and you are trying to summarize a git diff.
