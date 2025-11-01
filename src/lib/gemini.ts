@@ -78,4 +78,4 @@ export const aiSummariseCommit = async (diff: string) => {
     return feedbackJson;
 }
 
-console.log(await summariseCommits("https://github.com/DeepanshuK6996/MockMate/commit/0d6ebd77916eefcf91d2021214da6a73703d98f7.diff"));
+// console.log(await summariseCommits("https://github.com/DeepanshuK6996/MockMate/commit/0d6ebd77916eefcf91d2021214da6a73703d98f7.diff"));
