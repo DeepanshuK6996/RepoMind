@@ -13,5 +13,4 @@ export const loadGithubRepo = async (githubUrl: string, githubToken?: string) =>
     const docs = await loader.load();
     return docs
 }
-
-console.log(await loadGithubRepo("https://github.com/DeepanshuK6996/MockMate"));
+//console.log(await loadGithubRepo("https://github.com/DeepanshuK6996/MockMate"));
