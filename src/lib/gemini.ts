@@ -87,3 +87,21 @@ export async function summariseCode(doc: Document){
   
     return feedbackJson;
 }
+
+export async function generateEmbeddings(summary: string){
+    // const model = await  genAI.models.embedContent({
+    //     model: "text-embedding-004"
+    // });
+
+    // // const result = await model.embedContent(summary);
+    const response = await genAI.models.embedContent({
+        model: 'gemini-embedding-001',
+        contents: summary,
+    });
+    const embedding = response.embeddings;
+    console.log("response : ", response);
+    console.log("embedding are : ", embedding )
+    return embedding?.values;
+}
+
+console.log(await generateEmbeddings("hello world"));
