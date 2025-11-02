@@ -13,17 +13,19 @@ import {
 import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
+import { HeroSection } from "./HeroSection";
 
 export function Header() {
   const navItems = [
     { name: "Features", link: "#features" },
-    { name: "How It Works", link: "#pricing" },
+    { name: "How It Works", link: "#timeline" },
     { name: "Contact", link: "#contact" },
   ];
 
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   return (
+    <>
     <header className="relative w-full rounded-2xl border-b-2 border-neutral-700 bg-black text-white">
       <Navbar className="border-b border-neutral-800 bg-black text-white">
         {/* Desktop Navigation */}
@@ -105,5 +107,7 @@ export function Header() {
         </MobileNav>
       </Navbar>
     </header>
+    {/* <HeroSection/> */}
+  </>
   );
 }

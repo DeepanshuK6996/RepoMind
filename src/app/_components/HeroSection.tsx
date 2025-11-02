@@ -5,37 +5,36 @@ import { cn } from "@/lib/utils";
 import createGlobe from "cobe";
 import { motion } from "motion/react";
 import { IconBrandYoutubeFilled } from "@tabler/icons-react"; 
-import { Box, Lock, Search, Settings, Sparkles } from "lucide-react";
 import { GlowingEffect } from "@/components/ui/glowing-effect";
 
 
 export function HeroSection() {
   const features = [
     {
-      title: "Track issues effectively",
+      title: "Track commits effectively",
       description:
-        "Track and manage your project issues with ease using our intuitive interface.",
+        "Visualize your repository history, view changes, and monitor developer activity — all in one powerful dashboard.",
       skeleton: <SkeletonOne />,
       className: "col-span-1 lg:col-span-4 border-b lg:border-r border-neutral-700",
     },
     {
-      title: "Capture pictures with AI",
+      title: "Summarize Commits with AI",
       description:
-        "Capture stunning photos effortlessly using our advanced AI technology.",
+        "Capture stunning photos effortlessly using our advanced AI technology.Automatically generate concise summaries for every commit using advanced AI models. Focus on what matters — Repomind explains the rest.",
       skeleton: <SkeletonTwo />,
       className: "border-b col-span-1 lg:col-span-2 border-neutral-700",
     },
     {
-      title: "Watch our AI on YouTube",
+      title: "See Repomind in Action",
       description:
-        "Whether it's you or Tyler Durden, you can get to know about our product on YouTube",
+        "Explore how Repomind analyzes repositories, summarizes commits, and visualizes project trends — in our interactive demo videos.",
       skeleton: <SkeletonThree />,
       className: "col-span-1 lg:col-span-3 lg:border-r border-neutral-700",
     },
     {
-      title: "Deploy in seconds",
+      title: "Connect Your GitHub Instantly",
       description:
-        "With our blazing fast, state-of-the-art cloud services (read AWS) - you can deploy your model in seconds.",
+        "Link your GitHub repository and start getting real-time commit summaries, contribution analytics, and project health insights.",
       skeleton: <SkeletonFour />,
       className: "col-span-1 lg:col-span-3 border-b lg:border-none border-neutral-700",
     },
@@ -44,14 +43,13 @@ export function HeroSection() {
   return (
     <div className="bg-black text-white">
       <HeroParallax products={products} />
-      <div className="relative z-20 mx-auto max-w-7xl rounded-2xl px-8 py-10 lg:py-40">
+      <div className="relative z-20 mx-auto max-w-7xl rounded-2xl px-8 py-10 lg:py-40" id="features">
         <h4 className="mx-auto max-w-5xl text-center text-3xl font-medium tracking-tight lg:text-5xl lg:leading-tight">
-          Packed with thousands of features
+          Supercharge Your Repositories with Intelligent Insights
         </h4>
 
         <p className="mx-auto my-4 max-w-2xl text-center text-sm font-normal text-neutral-300 lg:text-base">
-          From Image generation to video generation, Everything AI has APIs for
-          literally everything. It can even create this website copy for you.
+          Repomind transforms raw commits into smart summaries, visual analytics, and AI-powered insights — making your development workflow faster, smarter, and beautifully automated.
         </p>
 
         <div className="mt-12 grid grid-cols-1 gap-4 rounded-md border border-neutral-700 lg:grid-cols-6">
@@ -69,208 +67,47 @@ export function HeroSection() {
   );
 }
 export const products = [
-
   {
-
-    title: "Moonbeam",
-
-    link: "https://gomoonbeam.com",
-
-    thumbnail:
-
-      "https://aceternity.com/images/products/thumbnails/new/moonbeam.png",
-
+    title: "GitHub",
+    link: "https://github.com",
+    thumbnail: "/github.png",
   },
-
   {
-
-    title: "Cursor",
-
-    link: "https://cursor.so",
-
-    thumbnail:
-
-      "https://aceternity.com/images/products/thumbnails/new/cursor.png",
-
+    title: "Google Gemini",
+    link: "https://gemini.google.com",
+    thumbnail: "/gemini.png",
   },
-
   {
-
-    title: "Rogue",
-
-    link: "https://userogue.com",
-
-    thumbnail:
-
-      "https://aceternity.com/images/products/thumbnails/new/rogue.png",
-
+    title: "Next.js",
+    link: "https://nextjs.org",
+    thumbnail: "/next.png",
   },
-
-
-
   {
-
-    title: "Editorially",
-
-    link: "https://editorially.org",
-
-    thumbnail:
-
-      "https://aceternity.com/images/products/thumbnails/new/editorially.png",
-
+    title: "Prisma ORM",
+    link: "https://www.prisma.io",
+    thumbnail: "/prisma.png",
   },
-
   {
-
-    title: "Editrix AI",
-
-    link: "https://editrix.ai",
-
-    thumbnail:
-
-      "https://aceternity.com/images/products/thumbnails/new/editrix.png",
-
+    title: "tRPC",
+    link: "https://trpc.io",
+    thumbnail: "/trpc.png",
   },
-
   {
-
-    title: "Pixel Perfect",
-
-    link: "https://app.pixelperfect.quest",
-
-    thumbnail:
-
-      "https://aceternity.com/images/products/thumbnails/new/pixelperfect.png",
-
+    title: "Tailwind CSS",
+    link: "https://tailwindcss.com",
+    thumbnail: "/tailwind.png",
   },
-
-
-
   {
-
-    title: "Algochurn",
-
-    link: "https://algochurn.com",
-
-    thumbnail:
-
-      "https://aceternity.com/images/products/thumbnails/new/algochurn.png",
-
+    title: "Bun Runtime",
+    link: "https://bun.sh",
+    thumbnail: "/bun.png",
   },
-
   {
-
-    title: "Aceternity UI",
-
-    link: "https://ui.aceternity.com",
-
-    thumbnail:
-
-      "https://aceternity.com/images/products/thumbnails/new/aceternityui.png",
-
-  },
-
-  {
-
-    title: "Tailwind Master Kit",
-
-    link: "https://tailwindmasterkit.com",
-
-    thumbnail:
-
-      "https://aceternity.com/images/products/thumbnails/new/tailwindmasterkit.png",
-
-  },
-
-  {
-
-    title: "SmartBridge",
-
-    link: "https://smartbridgetech.com",
-
-    thumbnail:
-
-      "https://aceternity.com/images/products/thumbnails/new/smartbridge.png",
-
-  },
-
-  {
-
-    title: "Renderwork Studio",
-
-    link: "https://renderwork.studio",
-
-    thumbnail:
-
-      "https://aceternity.com/images/products/thumbnails/new/renderwork.png",
-
-  },
+    title: "Langchain",
+    link: "https://langchain.com",
+    thumbnail: "/langchain.png"
+  }
 ];
-
-// export const products = [
-
-//   {
-
-//     title: "AI Q&A for GitHub",
-
-//     link: "#",
-
-//     thumbnail: "/images/thumbnails/github-qa.png",
-
-//   },
-
-//   {
-
-//     title: "Commit Summaries",
-
-//     link: "#",
-
-//     thumbnail: "/images/thumbnails/commit-summary.png",
-
-//   },
-
-//   {
-
-//     title: "Meeting Insights",
-
-//     link: "#",
-
-//     thumbnail: "/images/thumbnails/meeting-insights.png",
-
-//   },
-
-//   {
-
-//     title: "Codebase Search",
-
-//     link: "#",
-
-//     thumbnail: "/images/thumbnails/code-search.png",
-
-//   },
-
-//   {
-
-//     title: "Team Knowledge Hub",
-
-//     link: "#",
-
-//     thumbnail: "/images/thumbnails/knowledge-hub.png",
-
-//   },
-
-//   {
-
-//     title: "Automated Documentation",
-
-//     link: "#",
-
-//     thumbnail: "/images/thumbnails/auto-docs.png",
-
-//   },
-
-// ];
-
 
 const FeatureCard = ({ children, className }: { children?: React.ReactNode; className?: string }) => {
   return (
@@ -355,7 +192,7 @@ export const SkeletonTwo = () => {
 export const SkeletonThree = () => {
   return (
     <a
-      href="https://www.youtube.com/watch?v=RPa3_AD1_Vs"
+      href="https://www.youtube.com/"
       target="__blank"
       className="relative flex gap-10 h-full"
     >

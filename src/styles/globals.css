@@ -147,3 +147,6 @@
     --sidebar-ring: oklch(0.439 0 0);
   }
 }
+html {
+  scroll-behavior: smooth;
+}
