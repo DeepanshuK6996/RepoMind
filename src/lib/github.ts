@@ -7,7 +7,7 @@ export const octokit = new Octokit({
     auth: process.env.GITHUB_TOKEN,
 })
 
-//const githubUrl = "https://github.com/docker/genai-stack";
+const githubUrl = "https://github.com/docker/genai-stack";
 
 type Response = {
     commitMessage: string,
@@ -46,7 +46,7 @@ export const getCommits = async (githubUrl: string): Promise<Response[]> => {
     const {data} = await octokit.rest.repos.listCommits({
         owner,
         repo,
-        per_page: 10,
+        per_page: 5,
     });
 
     const sortedCommits = data.sort((a: any, b: any) => 
@@ -55,7 +55,7 @@ export const getCommits = async (githubUrl: string): Promise<Response[]> => {
 
     //console.log(data);
 
-    return sortedCommits.slice(0, 10).map((commit: any) => ({
+    return sortedCommits.slice(0, 5).map((commit: any) => ({
         commitHash: commit.sha as string,
         commitMessage: commit.commit.message ?? "No commit message",
         commitAuthorName: commit.commit.author?.name || "Unknown",

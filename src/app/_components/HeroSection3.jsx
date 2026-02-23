@@ -61,9 +61,9 @@ export function HeroSection3() {
             better understanding of changes.
           </p>
           <img
-            src="/images/commit-logs-preview.png"
+            src="/timeline3_1.png"
             alt="Commit logs preview"
-            className="h-36 w-full rounded-xl object-cover shadow-lg md:h-60"
+            className="h-36 w-full rounded-xl border-2 border-black object-contain shadow-lg md:h-60"
           />
         </div>
       ),

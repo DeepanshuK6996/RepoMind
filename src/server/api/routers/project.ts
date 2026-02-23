@@ -27,31 +27,33 @@ export const projectRouter = createTRPCRouter({
       await pullCommits(project.id);
       return project;
     }),
-    getProjects: protectedProcedure
-        .query(async({ctx}) => {
-            return await ctx.db.project.findMany({
-                where: {
-                    userToProjects: {
-                        some: {
-                            userId: ctx.user.userId!
-                        }
-                    },
-                    deletedAt: null,
-                }
-            })
-    }),
-    getCommits: protectedProcedure
-      .input(
-        z.object({ 
-          projectId: z.string(),
-        })
-      )
-      .query(async({ctx, input}) => {
-        await pullCommits(input.projectId).then().catch(console.error);
-        return await ctx.db.commit.findMany({
-          where: {
-            projectId: input.projectId,
+  getProjects: protectedProcedure.query(async ({ ctx }) => {
+    return await ctx.db.project.findMany({
+      where: {
+        userToProjects: {
+          some: {
+            userId: ctx.user.userId!,
           },
-        });
-      })
+        },
+        deletedAt: null,
+      },
+    });
+  }),
+  getCommits: protectedProcedure
+    .input(
+      z.object({
+        projectId: z.string(),
+      }),
+    )
+    .query(async ({ ctx, input }) => {
+      //await pullCommits(input.projectId).then().catch(console.error);
+      pullCommits(input.projectId).catch(console.error);
+
+      return await ctx.db.commit.findMany({
+        where: {
+          projectId: input.projectId,
+        },
+        orderBy: { commitDate: "desc" },
+      });
+    }),
 });   

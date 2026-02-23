@@ -30,7 +30,8 @@ export const aiSummariseCommit = async (diff: string) => {
             ${diff}
         `;
 
-    const model = "gemini-2.5-flash";
+    // const model = "gemini-3-flash-preview";
+    const model = "gemini-2.5-flash"; 
     const contents = [
         {
             role: "user",
@@ -40,8 +41,9 @@ export const aiSummariseCommit = async (diff: string) => {
 
     const response = await genAI.models.generateContent({ model, contents });
     const candidate = response.candidates?.[0];
-    const textContent = candidate?.content?.parts?.[0].text ?? "";
-
+    // const textContent = candidate?.content?.parts?.[0].text ?? "";
+    const rawText = candidate?.content?.parts?.[0]?.text;
+    const textContent = rawText ?? "";
     // clean up formatting if Gemini wraps in ```json ... ```
     const feedbackJson = textContent.replace('```json', '').replace('```', '');
   
@@ -80,8 +82,9 @@ export async function summariseCode(doc: Document){
 
     const response = await genAI.models.generateContent({ model, contents });
     const candidate = response.candidates?.[0];
-    const textContent = candidate?.content?.parts?.[0].text ?? "";
-
+    // const textContent = candidate?.content?.parts?.[0].text ?? "";
+    const rawText = candidate?.content?.parts?.[0]?.text;
+    const textContent = rawText ?? "";
     // clean up formatting if Gemini wraps in ```json ... ```
     const feedbackJson = textContent.replace('```json', '').replace('```', '');
   
@@ -99,9 +102,9 @@ export async function generateEmbeddings(summary: string){
         contents: summary,
     });
     const embedding = response.embeddings;
-    console.log("response : ", response);
-    console.log("embedding are : ", embedding )
+    //console.log("response : ", response);
+    //console.log("embedding are : ", embedding )
     return embedding?.values;
 }
 
-console.log(await generateEmbeddings("hello world"));
+//console.log(await generateEmbeddings("hello world"));

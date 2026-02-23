@@ -9,9 +9,14 @@ import React, { use } from 'react'
 const CommitLog = () => {
 
     const {projectId, project} = useProject();
-
-    const {data: commits} = api.project.getCommits.useQuery({projectId: projectId!});
-
+    
+    //Before it ran even when the project was not set
+    //const {data: commits} = api.project.getCommits.useQuery({projectId: projectId!});
+    const { data: commits } = api.project.getCommits.useQuery(
+      { projectId: projectId! },
+      { enabled: !!projectId && projectId.trim() !== "" },
+    );
+    
   return (
     <div>
         <h1 className='font-bold text-3xl text-center text-gray-700'>

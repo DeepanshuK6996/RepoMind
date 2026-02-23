@@ -6,11 +6,17 @@ generator client {
     previewFeatures = ["postgresqlExtensions"] 
 }
 
+//older version
 datasource db {
     provider = "postgresql"
     url      = env("DATABASE_URL")
     extensions = [vector]
 }
+
+//new version
+// datasource db {
+//     provider = "postgresql"
+// }
 
 model User {
     id        String   @id @default(cuid())
