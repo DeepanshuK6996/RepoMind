@@ -1,12 +1,16 @@
 //import { GoogleGenerativeAI } from '@google/generative-ai';
 import { GoogleGenAI } from '@google/genai';
 import { Document } from '@langchain/core/documents';
+import Groq from "groq-sdk";
 
 const genAI = new GoogleGenAI({
     apiKey: process.env.GEMINI_API_KEY!
 });
 
-// const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+const groq = new Groq({ 
+    apiKey: process.env.GROQ_API_KEY!
+}); 
+
 
 export const aiSummariseCommit = async (diff: string) => {
     const prompt = `
@@ -52,46 +56,85 @@ export const aiSummariseCommit = async (diff: string) => {
 
 // console.log(await summariseCommits("https://github.com/DeepanshuK6996/MockMate/commit/0d6ebd77916eefcf91d2021214da6a73703d98f7.diff"));
 
-export async function summariseCode(doc: Document){
+
+//code files summarization using GEMINI
+
+// export async function summariseCode(doc: Document){
+//     try {
+//       const filename = doc.metadata.source;
+//       console.log("getting summary for: ", filename);
+//       const code = doc.pageContent.slice(0, 10000); //limit to 10000 characters
+
+//       const prompt = `You are an intelligent senior software engineer helping a new junior developer understand this project.
+//                     Explain the purpose and functionality of the file named "${filename}" based on the code below.
+
+//                     ---
+//                     ${code}
+//                     ---
+
+//                     Provide a concise summary (no more than 100 words) describing:
+//                     - What this file does and its main responsibilities.
+//                     - How it fits into a larger application (if inferable).
+//                     Avoid restating the code line-by-line — focus on its intent and purpose.
+//                     `;
+
+//       const model = "gemini-2.5-flash";
+//       const contents = [
+//         {
+//           role: "user",
+//           parts: [{ text: prompt }],
+//         },
+//       ];
+
+//       const response = await genAI.models.generateContent({ model, contents });
+//       const candidate = response.candidates?.[0];
+//       // const textContent = candidate?.content?.parts?.[0].text ?? "";
+//       const rawText = candidate?.content?.parts?.[0]?.text;
+//       const textContent = rawText ?? "";
+//       // clean up formatting if Gemini wraps in ```json ... ```
+//       const feedbackJson = textContent
+//         .replace("```json", "")
+//         .replace("```", "");
+
+//       return feedbackJson;
+//     } catch(error) {
+//         console.error("Error summarising code for file: ", doc.metadata.source, error);
+//         return '';
+//     }
+// }
+
+//code files summarization using GROQ
+export async function summariseCode(doc: Document) {
+  try {
     const filename = doc.metadata.source;
     console.log("getting summary for: ", filename);
-    const code = doc.pageContent.slice(0,10000); //limit to 10000 characters
-
+    const code = doc.pageContent.slice(0, 10000);
 
     const prompt = `You are an intelligent senior software engineer helping a new junior developer understand this project.
-                    Explain the purpose and functionality of the file named "${filename}" based on the code below.
+                  Explain the purpose and functionality of the file named "${filename}" based on the code below.
 
-                    ---
-                    ${code}
-                    ---
+                  ---
+                  ${code}
+                  ---
 
-                    Provide a concise summary (no more than 100 words) describing:
-                    - What this file does and its main responsibilities.
-                    - How it fits into a larger application (if inferable).
-                    Avoid restating the code line-by-line — focus on its intent and purpose.
-                    `;
- 
+                  Provide a concise summary (no more than 100 words) describing:
+                  - What this file does and its main responsibilities.
+                  - How it fits into a larger application (if inferable).
+                  Avoid restating the code line-by-line — focus on its intent and purpose.
+                  `;
 
-    const model = "gemini-2.5-flash";
-    const contents = [
-        {
-            role: "user",
-            parts: [{ text: prompt }],
-        },
-    ];
+    const response = await groq.chat.completions.create({
+      messages: [{ role: "user", content: prompt }],
+      model: "llama-3.1-8b-instant",
+    });
 
-    const response = await genAI.models.generateContent({ model, contents });
-    const candidate = response.candidates?.[0];
-    // const textContent = candidate?.content?.parts?.[0].text ?? "";
-    const rawText = candidate?.content?.parts?.[0]?.text;
-    const textContent = rawText ?? "";
-    // clean up formatting if Gemini wraps in ```json ... ```
-    const feedbackJson = textContent.replace('```json', '').replace('```', '');
-  
-    return feedbackJson;
+    return response.choices[0]?.message?.content ?? "";
+  } catch (error) {
+    console.error("Error summarising code for file: ", doc.metadata.source, error);
+    return "";
+  }
 }
-
-export async function generateEmbeddings(summary: string){
+export async function generateEmbedding(summary: string){
     // const model = await  genAI.models.embedContent({
     //     model: "text-embedding-004"
     // });
@@ -103,8 +146,9 @@ export async function generateEmbeddings(summary: string){
     });
     const embedding = response.embeddings;
     //console.log("response : ", response);
-    //console.log("embedding are : ", embedding )
+    //console.log("embedding are : ", embedding);
+    //console.log("embedding values are : ", embedding?.values);
     return embedding?.values;
 }
 
-//console.log(await generateEmbeddings("hello world"));
+//console.log(await generateEmbedding("hello world"));

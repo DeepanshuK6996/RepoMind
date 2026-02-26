@@ -7,7 +7,7 @@ export const octokit = new Octokit({
     auth: process.env.GITHUB_TOKEN,
 })
 
-const githubUrl = "https://github.com/docker/genai-stack";
+//const githubUrl = "https://github.com/docker/genai-stack";
 
 type Response = {
     commitMessage: string,
@@ -109,13 +109,39 @@ export const pullCommits = async (projectId: string) => {
 
 async function summariseCommit(githubUrl: string, commitHash: string){
     //get the diff and pass to gemini
-    const {data} = await axios.get(`${githubUrl}/commit/${commitHash}.diff`, {
-        headers: {
-            //'Authorization': `Bearer ${process.env.GITHUB_TOKEN}`,
-            'Accept': 'application/vnd.github.v3.diff',
-        }
-    });
-    return await aiSummariseCommit(data) || "No Summary Generated";
+
+    //using axios
+    // const {data} = await axios.get(`${githubUrl}/commit/${commitHash}.diff`, {
+    //     headers: {
+    //         //'Authorization': `Bearer ${process.env.GITHUB_TOKEN}`,
+    //         'Accept': 'application/vnd.github.v3.diff',
+    //     }
+    // });
+    // return await aiSummariseCommit(data) || "No Summary Generated";
+
+    //using octokit
+    const cleanUrl = githubUrl.replace(/\/+$/, "");
+    const [owner, repo] = cleanUrl.split('/').slice(-2);
+    
+    try {
+        // Use Octokit instead of raw axios — handles auth automatically
+        const { data } = await octokit.request(
+            'GET /repos/{owner}/{repo}/commits/{ref}',
+            {
+                owner: owner!,
+                repo: repo!,
+                ref: commitHash,
+                headers: {
+                    accept: 'application/vnd.github.v3.diff',
+                }
+            }
+        );
+        return await aiSummariseCommit(data as unknown as string) || "No Summary Generated";
+    } catch (error) {
+        console.error(`Failed to fetch diff for commit ${commitHash}:`, error);
+        return "No Summary Available";
+    }
+
 }
 
 async function fetchProjectGithubUrl(projectId: string) {

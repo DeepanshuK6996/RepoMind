@@ -5,6 +5,8 @@
 import "./src/env.js";
 
 /** @type {import("next").NextConfig} */
-const config = {};
+const config = {
+    serverExternalPackages: ['@google/genai', 'google-auth-library'],
+};
 
 export default config;
