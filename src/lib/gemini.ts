@@ -4,8 +4,15 @@ import { Document } from '@langchain/core/documents';
 import Groq from "groq-sdk";
 
 const genAI = new GoogleGenAI({
-    apiKey: process.env.GEMINI_API_KEY!
+    apiKey: process.env.GEMINI_API_KEY!,
+    // httpOptions: { apiVersion: 'v1' }
 });
+
+// Separate instance for embedding
+// const genAIEmbed = new GoogleGenAI({
+//     apiKey: process.env.GEMINI_API_KEY!,
+//     httpOptions: { apiVersion: 'v1' }
+// });
 
 const groq = new Groq({ 
     apiKey: process.env.GROQ_API_KEY!
@@ -134,6 +141,12 @@ export async function summariseCode(doc: Document) {
     return "";
   }
 }
+
+// const models = await genAI.models.list();
+// for await (const model of models) {
+//     console.log(model.name, model.supportedActions);
+// }
+
 export async function generateEmbedding(summary: string){
     // const model = await  genAI.models.embedContent({
     //     model: "text-embedding-004"
@@ -148,7 +161,11 @@ export async function generateEmbedding(summary: string){
     //console.log("response : ", response);
     //console.log("embedding are : ", embedding);
     //console.log("embedding values are : ", embedding?.values);
-    return embedding?.values;
+    
+    //return embedding?.values;
+    return embedding?.[0]?.values;
 }
 
-//console.log(await generateEmbedding("hello world"));
+// console.log(await generateEmbedding("hello world"));
+// const embedding = await generateEmbedding("hello world");
+// console.log("Dimensions:", embedding?.length);
