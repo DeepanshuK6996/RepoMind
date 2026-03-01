@@ -7,6 +7,7 @@ import React from 'react'
 import CommitLog from './commit-log';
 import { Button } from '@/components/ui/button';
 import QuestionCard from './question-card';
+import Archive from './archive';
 
 const DashboardPage = () => {
 
@@ -38,10 +39,15 @@ const DashboardPage = () => {
           </div>
         </div>
 
-        <Button variant={"ghost"}
-          className="cursor-pointer border-black-500 rounded-md border px-4 py-3">
+        <div className='flex gap-2'>
+          <Archive />
+
+          <Button variant={"ghost"}
+            className="cursor-pointer border-black-500 rounded-md border px-4 py-3"
+          >
             Invite Members
-        </Button>
+          </Button>
+        </div>
       </div>
 
       {/* Question and meeting Cards */}
