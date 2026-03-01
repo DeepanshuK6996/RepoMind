@@ -7,6 +7,14 @@ import "./src/env.js";
 /** @type {import("next").NextConfig} */
 const config = {
     serverExternalPackages: ['@google/genai', 'google-auth-library'],
+    images: {
+        remotePatterns: [
+          { 
+            protocol: "https",
+            hostname: "img.clerk.com",  // 👈 add this
+          },
+        ],
+    },
 };
 
 export default config;
