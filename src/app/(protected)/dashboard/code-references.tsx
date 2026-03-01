@@ -1,9 +1,60 @@
-import { Button } from '@/components/ui/button';
-import { Tabs } from '@/components/ui/tabs';
-import { TabsContent } from '@radix-ui/react-tabs';
-import React, { useState } from 'react'
-import {Prism as SyntaxHighlighter} from 'react-syntax-highlighter';
-import {oneDark} from 'react-syntax-highlighter/dist/esm/styles/prism';
+// import { Button } from '@/components/ui/button';
+// import { Tabs } from '@/components/ui/tabs';
+// import { TabsContent } from '@radix-ui/react-tabs';
+// import React, { useState } from 'react'
+// import {Prism as SyntaxHighlighter} from 'react-syntax-highlighter';
+// import {oneDark} from 'react-syntax-highlighter/dist/esm/styles/prism';
+
+// type Props = {
+//     filesReferences: {
+//         fileName: string;
+//         sourceCode: string;
+//         summary: string;
+//     }[]
+// }
+
+// const CodeReferences = ({filesReferences}: Props) => {
+
+//     const [tab, setTab] = useState(filesReferences[0]?.fileName || ''); 
+
+//     if(filesReferences.length === 0) {
+//         return null;
+//     }
+
+//   return (
+//     // <div className='max-w-[70vw]'>
+//     <div className='w-full h-full flex flex-col min-h-0'>   
+//         <Tabs value={tab} onValueChange={setTab} className="w-full">
+//             <div className='overflow-scroll flex gap-2 bg-gray-300 rounded-2xl p-1'>
+//                 {filesReferences.map(file => (
+//                     <Button key={file.fileName} variant={tab === file.fileName ? "default" : "outline"} className="rounded-lg px-3 py-1 text-sm font-medium transition-colors whitespace-nowrap" value={file.fileName}>
+//                         {file.fileName}
+//                     </Button>
+//                 ))}
+//             </div>
+//             {filesReferences.map(file => (
+//                 <TabsContent key={file.fileName} 
+//                     value={file.fileName} 
+//                     // className="max-h-[40vh]overflow-scroll max-w-7xl rounded-md"
+//                     //className="max-h-[35vh] overflow-y-auto rounded-md"
+//                     className="min-h-0 flex-1 overflow-y-auto rounded-md"
+//                 >
+//                     <SyntaxHighlighter language="typescript" style={oneDark}>
+//                         {file.sourceCode}
+//                     </SyntaxHighlighter>
+//                 </TabsContent>
+//             ))
+//             }
+//         </Tabs>
+//     </div>
+//   )
+// }
+
+// export default CodeReferences
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import React, { useState, useEffect } from 'react'
+import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
+import { oneDark } from 'react-syntax-highlighter/dist/esm/styles/prism';
 
 type Props = {
     filesReferences: {
@@ -13,41 +64,65 @@ type Props = {
     }[]
 }
 
-const CodeReferences = ({filesReferences}: Props) => {
+const CodeReferences = ({ filesReferences }: Props) => {
+    const [tab, setTab] = useState('');
 
-    const [tab, setTab] = useState(filesReferences[0]?.fileName || ''); 
+    useEffect(() => {
+        if (filesReferences.length > 0) {
+            // Always reset to first tab when new refs arrive
+            setTab(filesReferences[0]?.fileName || '');
+        }
+    }, [filesReferences]);
 
-    if(filesReferences.length === 0) {
-        return null;
+    // ✅ Don't return null — always render the container so the parent section
+    // keeps its height. Show a placeholder while refs are loading instead.
+    if (filesReferences.length === 0) {
+        return (
+            <div className="flex h-full w-full items-center justify-center bg-muted/10">
+                <p className="text-sm text-muted-foreground">File references will appear here...</p>
+            </div>
+        );
     }
 
-  return (
-    // <div className='max-w-[70vw]'>
-    <div className='w-full h-full flex flex-col min-h-0'>   
-        <Tabs value={tab} onValueChange={setTab} className="w-full">
-            <div className='overflow-scroll flex gap-2 bg-gray-300 rounded-2xl p-1'>
-                {filesReferences.map(file => (
-                    <Button key={file.fileName} variant={tab === file.fileName ? "default" : "outline"} className="rounded-lg px-3 py-1 text-sm font-medium transition-colors whitespace-nowrap" value={file.fileName}>
-                        {file.fileName}
-                    </Button>
-                ))}
-            </div>
-            {filesReferences.map(file => (
-                <TabsContent key={file.fileName} 
-                    value={file.fileName} 
-                    // className="max-h-[40vh]overflow-scroll max-w-7xl rounded-md"
-                    //className="max-h-[35vh] overflow-y-auto rounded-md"
-                    className="min-h-0 flex-1 overflow-y-auto rounded-md"
-                >
-                    <SyntaxHighlighter language="typescript" style={oneDark}>
-                        {file.sourceCode}
-                    </SyntaxHighlighter>
-                </TabsContent>
-            ))
-            }
-        </Tabs>
-    </div>
-  )
+    return (
+        <div className="w-full h-full flex flex-col overflow-hidden">
+            <Tabs value={tab} onValueChange={setTab} className="flex flex-col h-full">
+
+                {/* Tab bar */}
+                <TabsList className="shrink-0 flex gap-2 bg-gray-200 rounded-none px-3 py-2 overflow-x-auto justify-start h-auto">
+                    {filesReferences.map(file => (
+                        <TabsTrigger
+                            key={file.fileName}
+                            value={file.fileName}
+                            className="rounded-md px-3 py-1 text-sm font-medium whitespace-nowrap data-[state=active]:bg-gray-900 data-[state=active]:text-white"
+                        >
+                            {file.fileName}
+                        </TabsTrigger>
+                    ))}
+                </TabsList>
+
+                {/* Code panels — fill remaining height */}
+                <div className="flex-1 min-h-0 overflow-y-auto p-4 rounded-md">
+                    {filesReferences.map(file => (
+                        <TabsContent
+                            key={file.fileName}
+                            value={file.fileName}
+                            className="m-0 h-full data-[state=inactive]:hidden"
+                        >
+                            <SyntaxHighlighter
+                                language="typescript"
+                                style={oneDark}
+                                customStyle={{ margin: 0, borderRadius: 0, minHeight: '100%' }}
+                            >
+                                {file.sourceCode}
+                            </SyntaxHighlighter>
+                        </TabsContent>
+                    ))}
+                </div>
+
+            </Tabs>
+        </div>
+    );
 }
 
 export default CodeReferences
