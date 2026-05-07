@@ -12,6 +12,7 @@ const Archive = () => {
     const refetch = useRefetch();
   return (
     <Button variant={'destructive'}
+      size='sm'
       className='cursor-pointer'
       disabled={archivedProjects.isPending}
       onClick={() => {

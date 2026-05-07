@@ -8,6 +8,8 @@ import CommitLog from './commit-log';
 import { Button } from '@/components/ui/button';
 import QuestionCard from './question-card';
 import Archive from './archive';
+import Invite from './invite';
+import InviteButton from './invite-button';
 
 const DashboardPage = () => {
 
@@ -40,13 +42,10 @@ const DashboardPage = () => {
         </div>
 
         <div className='flex gap-2'>
-          <Archive />
 
-          <Button variant={"ghost"}
-            className="cursor-pointer border-black-500 rounded-md border px-4 py-3"
-          >
-            Invite Members
-          </Button>
+          <InviteButton />
+          <Archive />     
+               
         </div>
       </div>
 

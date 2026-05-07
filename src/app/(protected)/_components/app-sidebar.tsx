@@ -34,11 +34,6 @@ const items = [
         icon: Bot,
     },
     {
-        title: "Meetings",
-        url: "/meetings",
-        icon: Presentation,
-    },
-    {
         title: "Billing",
         url: "/billing",
         icon: CreditCard,
