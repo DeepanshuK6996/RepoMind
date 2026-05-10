@@ -5,11 +5,11 @@ import { ExternalLink, Github } from 'lucide-react';
 import Link from 'next/link';
 import React from 'react'
 import CommitLog from './commit-log';
-import { Button } from '@/components/ui/button';
 import QuestionCard from './question-card';
 import Archive from './archive';
-import Invite from './invite';
-import InviteButton from './invite-button';
+// import InviteButton from './invite-button';
+import dynamic from 'next/dynamic';
+const InviteButton = dynamic(() => import('./invite-button'), { ssr: false });
 
 const DashboardPage = () => {
 
