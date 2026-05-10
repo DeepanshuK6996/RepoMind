@@ -60,11 +60,36 @@ export function HeroSection3() {
             GitHub. Each commit is summarized with AI-generated insights for
             better understanding of changes.
           </p>
-          <img
-            src="/timeline3_1.png"
-            alt="Commit logs preview"
-            className="h-36 w-full rounded-xl border-2 border-black object-contain shadow-lg md:h-60"
-          />
+          <div className="flex items-center justify-between gap-3">
+            <img
+              src="/timeline3_1.png"
+              alt="Commit logs preview"
+              className="h-36 w-full rounded-xl object-cover shadow-lg md:h-60"
+            />
+            <img
+              src="/timeline3_2.png"
+              alt="commit logs details"
+              className="h-36 w-full rounded-xl object-cover shadow-lg md:h-60"
+            />
+          </div>
+        </div>
+      ),
+    },
+    {
+      title: "Step 4 — Semantic Search and AI Summarization",
+      content: (
+        <div>
+          <p className="mb-4 text-sm text-neutral-300">
+            User can ask for summaries and suggestions using natural language queries. 
+            AI-generated insights provide context and help understand issues, repository files and identify important changes.
+          </p>
+          <div className="flex items-center justify-between gap-3">
+            <img
+              src="/timeline4_2.png"
+              alt="questions answer page"
+              className="h-36 w-full rounded-xl object-cover shadow-lg md:h-60"
+            />
+          </div>
         </div>
       ),
     },
